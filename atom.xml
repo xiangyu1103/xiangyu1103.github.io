@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://xiangyu1103.github.io/"/>
-  <updated>2019-12-16T04:23:20.209Z</updated>
+  <updated>2019-12-18T08:48:16.207Z</updated>
   <id>https://xiangyu1103.github.io/</id>
   
   <author>
@@ -17,37 +17,15 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="https://xiangyu1103.github.io/2019/12/16/hello-world/"/>
-    <id>https://xiangyu1103.github.io/2019/12/16/hello-world/</id>
-    <published>2019-12-16T04:23:20.209Z</published>
-    <updated>2019-12-16T04:23:20.209Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a
-        
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(10)/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (10)/</id>
+    <title>HCL模拟器设备远程登录方法</title>
+    <link href="https://xiangyu1103.github.io/2018/12/12/HCL%E6%A8%A1%E6%8B%9F%E5%99%A8%E8%AE%BE%E5%A4%87%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E6%96%B9%E6%B3%95/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/HCL模拟器设备远程登录方法/</id>
     <published>2018-12-12T14:16:01.000Z</published>
-    <updated>2019-08-29T05:23:36.000Z</updated>
+    <updated>2019-12-18T08:48:16.207Z</updated>
     
     <summary type="html">
     
-      hexo-sakura主题使用教程
+      HCL模拟器设备远程登录方法
     
     </summary>
     
@@ -84,8 +62,8 @@
   
   <entry>
     <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(13)/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (13)/</id>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(10)/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (10)/</id>
     <published>2018-12-12T14:16:01.000Z</published>
     <updated>2019-08-29T05:23:36.000Z</updated>
     
@@ -128,8 +106,8 @@
   
   <entry>
     <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(14)/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (14)/</id>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(13)/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (13)/</id>
     <published>2018-12-12T14:16:01.000Z</published>
     <updated>2019-08-29T05:23:36.000Z</updated>
     
@@ -150,8 +128,8 @@
   
   <entry>
     <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(16)/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (16)/</id>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(14)/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (14)/</id>
     <published>2018-12-12T14:16:01.000Z</published>
     <updated>2019-08-29T05:23:36.000Z</updated>
     
@@ -194,8 +172,8 @@
   
   <entry>
     <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(5)/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (5)/</id>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(16)/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (16)/</id>
     <published>2018-12-12T14:16:01.000Z</published>
     <updated>2019-08-29T05:23:36.000Z</updated>
     
@@ -238,8 +216,8 @@
   
   <entry>
     <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(2)/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (2)/</id>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(4)/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (4)/</id>
     <published>2018-12-12T14:16:01.000Z</published>
     <updated>2019-08-29T05:23:36.000Z</updated>
     
@@ -260,8 +238,30 @@
   
   <entry>
     <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(4)/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (4)/</id>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(5)/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (5)/</id>
+    <published>2018-12-12T14:16:01.000Z</published>
+    <updated>2019-08-29T05:23:36.000Z</updated>
+    
+    <summary type="html">
+    
+      hexo-sakura主题使用教程
+    
+    </summary>
+    
+      <category term="技术" scheme="https://xiangyu1103.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="web" scheme="https://xiangyu1103.github.io/tags/web/"/>
+    
+      <category term="悦读" scheme="https://xiangyu1103.github.io/tags/%E6%82%A6%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo-Theme-Sakura</title>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(2)/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (2)/</id>
     <published>2018-12-12T14:16:01.000Z</published>
     <updated>2019-08-29T05:23:36.000Z</updated>
     
@@ -348,8 +348,8 @@
   
   <entry>
     <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(9)/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (9)/</id>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本/</id>
     <published>2018-12-12T14:16:01.000Z</published>
     <updated>2019-08-29T05:23:36.000Z</updated>
     
@@ -370,8 +370,8 @@
   
   <entry>
     <title>Hexo-Theme-Sakura</title>
-    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC/"/>
-    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本/</id>
+    <link href="https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura%20-%20%E5%89%AF%E6%9C%AC%20(9)/"/>
+    <id>https://xiangyu1103.github.io/2018/12/12/Hexo-Theme-Sakura - 副本 (9)/</id>
     <published>2018-12-12T14:16:01.000Z</published>
     <updated>2019-08-29T05:23:36.000Z</updated>
     
@@ -400,6 +400,50 @@
     <summary type="html">
     
       hexo-sakura主题使用教程
+    
+    </summary>
+    
+      <category term="技术" scheme="https://xiangyu1103.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="web" scheme="https://xiangyu1103.github.io/tags/web/"/>
+    
+      <category term="悦读" scheme="https://xiangyu1103.github.io/tags/%E6%82%A6%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux彻底卸载Nginx</title>
+    <link href="https://xiangyu1103.github.io/2018/12/11/Linux%E5%BD%BB%E5%BA%95%E5%8D%B8%E8%BD%BDNginx/"/>
+    <id>https://xiangyu1103.github.io/2018/12/11/Linux彻底卸载Nginx/</id>
+    <published>2018-12-11T12:16:01.000Z</published>
+    <updated>2019-12-18T09:05:11.160Z</updated>
+    
+    <summary type="html">
+    
+      Linux彻底卸载Nginx
+    
+    </summary>
+    
+      <category term="技术" scheme="https://xiangyu1103.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="web" scheme="https://xiangyu1103.github.io/tags/web/"/>
+    
+      <category term="悦读" scheme="https://xiangyu1103.github.io/tags/%E6%82%A6%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos7-5快速yum、编译安装nginx方法（命令）</title>
+    <link href="https://xiangyu1103.github.io/2018/12/11/centos7-5%E5%BF%AB%E9%80%9Fyum%E3%80%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E6%96%B9%E6%B3%95%EF%BC%88%E5%91%BD%E4%BB%A4%EF%BC%89/"/>
+    <id>https://xiangyu1103.github.io/2018/12/11/centos7-5快速yum、编译安装nginx方法（命令）/</id>
+    <published>2018-12-11T12:16:01.000Z</published>
+    <updated>2019-12-18T09:07:20.756Z</updated>
+    
+    <summary type="html">
+    
+      centos7-5快速yum、编译安装nginx方法（命令）
     
     </summary>
     
