@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <title itemprop="name">Nginx反向代理与正向代理 | DREAMER</title>
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC" media="all">
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="stylesheet" id="saukra_css-css" href="/css/style.css" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/lib.min.css" media="all">
+  <link rel="stylesheet" href="/css/font.css" media="all">
+  <link rel="stylesheet" href="/css/insight.css" media="all">
+  <link rel="stylesheet" href="/css/jquery.fancybox.min.css" media="all">
+  <link rel="stylesheet" href="/css/zoom.css" media="all">
+  <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<!--   <link rel="stylesheet" id="saukra_css-css" href="https://2heng.xin/wp-content/cache/autoptimize/css/autoptimize_ad42a61f4c7d4bdd9f91afcff6b5dda5.css
+" type="text/css" media="all"> -->
+  <script>
+  /*Initial Variables*/
+  var mashiro_option = new Object();
+  var mashiro_global = new Object();
+  mashiro_option.NProgressON = true;
+  /* 
+   * 邮箱信息之类的东西可以填在这里，这些js变量基本都作用于sakura-app.js
+   * 这样的设置仅是为了方便在基于PHP开发的主题中设置js变量，既然移植到了Node上，我想或许可以精简这一逻辑吧
+   */
+  mashiro_option.email_domain = "";
+  mashiro_option.email_name = "";
+  mashiro_option.cookie_version_control = "";
+  mashiro_option.qzone_autocomplete = false;
+  mashiro_option.site_name = "さくら荘そのDREAMER";
+  mashiro_option.author_name = "DREAMER";
+  mashiro_option.site_url = "https://xiangyu1103.github.io";
+  mashiro_option.v_appId = "yRrWxdm60ya2scYz7h6mjamr-gzGzoHsz";
+  mashiro_option.v_appKey = "9s7yETi1nLzx2hQ0OhE6508X";
+  mashiro_option.mathjax = "0";
+  mashiro_option.qq_api_url = "https://api.mashiro.top/qqinfo/"; 
+  mashiro_option.qq_avatar_api_url = "https://api.mashiro.top/qqinfo/";
+
+  // mashiro_option.jsdelivr_css_src = "https://cdn.jsdelivr.net/gh/moezx/cdn@3.4.5/css/lib.min.css";
+  // mashiro_option.float_player_on = true;
+
+  /*End of Initial Variables*/
+  </script>
+  <script type="text/javascript">
+  var bg = "https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/cover/(0).jpg.webp,https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/cover/(1).jpg.webp,https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/cover/(2).jpg.webp,https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/cover/(3).jpg.webp,https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/cover/(4).jpg.webp,https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/cover/(5).jpg.webp,https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/cover/(6).jpg.webp,https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/cover/(7).jpg.webp".split(",");
+  var bgindex = Math.floor(Math.random()*bg.length);
+  if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
+    alert('朋友，IE浏览器未适配哦~');
+  }
+  </script>
+  <style type="text/css">
+  .hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}
+  </style>
+  <style type="text/css">.site-top .lower nav{display:block !important;}.author-profile i,.post-like a,.post-share .show-share,.sub-text,.we-info a,span.sitename,.post-more i:hover,#pagination a:hover,.post-content a:hover,.float-content i:hover{color:#FE9600}.feature i,.download,.navigator i:hover,.links ul li:before,.ar-time i,span.ar-circle,.object,.comment .comment-reply-link,.siren-checkbox-radio:checked + .siren-checkbox-radioInput:after{background:#FE9600}::-webkit-scrollbar-thumb{background:#FE9600}.download,.navigator i:hover,.link-title,.links ul li:hover,#pagination a:hover,.comment-respond input[type='submit']:hover{border-color:#FE9600}.entry-content a:hover,.site-info a:hover,.comment h4 a,#comments-navi a.prev,#comments-navi a.next,.comment h4 a:hover,.site-top ul li a:hover,.entry-title a:hover,#archives-temp h3,span.page-numbers.current,.sorry li a:hover,.site-title a:hover,i.iconfont.js-toggle-search.iconsearch:hover,.comment-respond input[type='submit']:hover{color:#FE9600}.comments .comments-main{display:block !important;}.comments .comments-hidden{display:none !important;}background-position:center center;background-attachment:inherit;}
+  </style>
+</head>
+</html>
+<body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
+  <div class="scrollbar" id="bar">
+  </div>
+  <a href="#" class="cd-top faa-float animated"></a>
+  <section id="main-container">
+    <div class="headertop filter-dot">
+  <div id="banner_wave_1"></div>
+  <div id="banner_wave_2"></div>
+  <figure id="centerbg" class="centerbg">
+    <div class="focusinfo no-select">
+      <div class="header-tou">
+        <a href="https://xiangyu1103.github.io">
+          <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/avatar.jpg">
+        </a>
+      </div>
+      <div class="header-info">
+        <p>呼出口气，吸争口气！！！</p>
+        <div class="top-social_v2">
+          <li id="bg-pre">
+            <img class="flipx" src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/next-b.svg">
+          </li>
+          
+            
+              
+                <li>
+                  <a href="http://github.com/xiangyu1103" target="_blank" class="social-github" title="github">
+                    <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/social/github.png">
+                  </a>
+                </li>
+              
+            
+              
+                <li>
+                  <a href="https://weibo.com/938560289/home?wvr=5" target="_blank" class="social-github" title="sina">
+                    <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/social/sina.png">
+                  </a>
+                </li>
+              
+            
+              
+                <li>
+                  <a href="https://weibo.com/938560289/home?wvr=5" target="_blank" class="social-github" title="wangyiyun">
+                    <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/social/wangyiyun.png">
+                  </a>
+                </li>
+              
+            
+              
+                <li>
+                  <a href="https://weibo.com/938560289/home?wvr=5" target="_blank" class="social-github" title="zhihu">
+                    <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/social/zhihu.png">
+                  </a>
+                </li>
+              
+            
+              
+                <li>
+                  <a href="https://weibo.com/938560289/home?wvr=5" target="_blank" class="social-github" title="email">
+                    <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/social/email.svg">
+                  </a>
+                </li>
+              
+            
+              
+                <li class="wechat">
+                  <a href="/#">
+                    <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/social/wechat.png">
+                  </a>
+                  <div class="wechatInner">
+                    <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/weixin01.png">
+                  </div>
+                </li>
+              
+            
+          
+          <li id="bg-next">
+            <img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/next-b.svg">
+          </li>
+        </div>
+      </div>
+    </div>
+  </figure>
+  <div id="video-container" style="">
+    <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
+    </video>
+    <div id="video-btn" class="loadvideo videolive">
+    </div>
+    <div id="video-add">
+    </div>
+    <div class="video-stu">
+    </div>
+  </div>
+  <div class="headertop-down faa-float animated" onclick="headertop_down()">
+    <span>
+      <i class="fa fa-chevron-down" aria-hidden="true">
+      </i>
+    </span>
+  </div>
+</div>
+    <div id="page" class="site wrapper">
+      <header class="site-header no-select gizle sabit" role="banner">
+  <div class="site-top">
+    <div class="site-branding">
+      <span class="site-title">
+        <span class="logolink moe-mashiro">
+          <a href="/">
+            <span class="sakurasono">さくら荘その</span>
+            <span class="shironeko">DREAMER</span>
+          </a>
+        </span>
+      </span>
+    </div>
+    <div class="searchbox search-form-submit">
+      <i class="iconfont js-toggle-search iconsearch icon-search">
+      </i>
+    </div>
+    <div id="show-nav" class="showNav mobile-fit">
+      <div class="line line1">
+      </div>
+      <div class="line line2">
+      </div>
+      <div class="line line3">
+      </div>
+    </div>
+    <div class="lower-cantiner">
+      <div class="lower">
+        <nav class="mobile-fit-control hide">
+          <ul id="menu-new" class="menu">
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+                    首页
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    归档
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/技术/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          技术
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/生活/">
+                          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                          生活
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/资源/">
+                          <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                          资源
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/随想/">
+                          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                          随想
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/转载/">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                          转载
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="javascript:;">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-list-ul faa-vertical" aria-hidden="true"></i>
+                    清单
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/tags/悦读/">
+                          <i class="fa fa-th-list faa-bounce" aria-hidden="true"></i>
+                          书单
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/bangumi/">
+                          <i class="fa fa-film faa-vertical" aria-hidden="true"></i>
+                          番组
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/video/">
+                          <i class="fa fa fa-file-video-o" aria-hidden="true"></i>
+                          视频
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/music/">
+                          <i class="fa fa-headphones" aria-hidden="true"></i>
+                          歌单
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/tags/图集/">
+                          <i class="fa fa-photo" aria-hidden="true"></i>
+                          图集
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    Ops工具
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/linux/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          Linux
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/nginx/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          Nginx
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/tomcat/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          Tomcat
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/php/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          php
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/shell/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          Shell
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/jumpserver/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          Jumpserver
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    DevOps
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="//categories/虚拟化/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          虚拟化
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="//categories/docker/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          Docker
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="//categories/kubernetes/">
+                          <i class="fa fa-anchor" aria-hidden="true"></i>
+                          Kubernetes
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    监控
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/zabbix/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          zabbix
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/nagios/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          nagios
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/Grafana/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          Grafana
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/prometheus/">
+                          <i class="fa fa-free-code-camp" aria-hidden="true"></i>
+                          prometheus
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    数据库
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/mysql/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          mysql
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/redis/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          redis
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/Oracle/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          Oracle
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/links/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-link faa-shake" aria-hidden="true"></i>
+                    友人帐
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+                    关于
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/about/">
+                          <i class="fa fa-meetup" aria-hidden="true"></i>
+                          我？
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/theme-sakura/">
+                          <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                          主题
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/lab/">
+                          <i class="fa fa-cogs" aria-hidden="true"></i>
+                          Lab
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/donate/">
+                          <i class="fa fa-heart faa-pulse" aria-hidden="true"></i>
+                          赞赏
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/xiangyu1103/picgo/img/miao02.jpg);" src="" data-src="https://cdn.jsdelivr.net/gh/xiangyu1103/picgo/img/miao02.jpg">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      Nginx反向代理与正向代理</h1>
+      <p class="entry-census">
+        <span>
+          <a href="xiangyu1103.githu.io">
+            <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/picgo/img/touxiang01.jpg">
+          </a>
+        </span>
+        <span>
+          <a href="xiangyu1103.githu.io">xiangyu1103</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2019-12-25<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h1 id="Nginx-反向代理与正向代理"><a href="#Nginx-反向代理与正向代理" class="headerlink" title="Nginx 反向代理与正向代理"></a>Nginx 反向代理与正向代理</h1><p>代理分为正向代理和反向代理,本次就来演示一下Nginx配置正向代理和反向代理的场景。 顺便讲解一下正向代理和反向代理的区别正向代理和反向代理的区别</p>
+<pre><code>Nginx
+</code></pre><hr>
+<p><strong>首先，我们需要知道什么是反向代理和正向代理区别</strong></p>
+<h3 id="一、正向代理"><a href="#一、正向代理" class="headerlink" title="一、正向代理"></a>一、正向代理</h3><p><img src="http://static.zybuluo.com/abcdocker/ztwey8ruapp2ykog030x2tw7/image_1dc4a1othlvj1668rh21i53b649.png" alt="image_1dc4a1othlvj1668rh21i53b649.png-103.3kB"></p>
+<blockquote>
+<p>正向代理简单的来说就是我们的代理服务器代替用户去请求后端节点</p>
+</blockquote>
+<blockquote>
+<p>nginx正向代理代替工具还有goproxy</p>
+</blockquote>
+<p><strong>为什么要使用正向代理</strong></p>
+<ul>
+<li><strong>用户无法直接访问服务器B</strong> （常见例子就是我们使用的<a href="https://i4t.com/category/shadowsocks" target="_blank" rel="noopener">Shadowsocks</a>）</li>
+</ul>
+<p><img src="http://static.zybuluo.com/abcdocker/5i3utwbs1bxvkqizf7jdptp1/image_1dc4e8hpa1hkod3fnm361n12tkm.png" alt="image_1dc4e8hpa1hkod3fnm361n12tkm.png-99.6kB"></p>
+<ul>
+<li><strong>Cache缓存作用</strong></li>
+</ul>
+<p>cache缓存技术和代理服务技术是紧密联系的（不只是正向代理使用cache缓存，反向代理同时也使用缓存）简单的来说就是用户A访问了<code>代理服务器</code>，那么代理服务器会将用户A的数据保存一段时间，如果该时间段呢用户B同时也访问了<code>代理服务器</code>，那么代理服务器将不会直接请求服务器B，而是直接将缓存直接返回给用户A</p>
+<ul>
+<li><strong>拦截访问</strong></li>
+</ul>
+<p><img src="http://static.zybuluo.com/abcdocker/arq8pe15o6o2i589t8pqfuof/image_1dc4f02k58jntf9qcplhe1e6g1g.png" alt="image_1dc4f02k58jntf9qcplhe1e6g1g.png-54.7kB"></p>
+<p>假设用户A和用户B都设置了代理服务器，用户A允许访问互联网，而用户B不允许防火互联网（这个代理服务器Z上做限制）这样用户A因为授权，可以通过代理服务器访问到服务器C，而用户B因为没有被代理服务器授权时，数据包会直接丢弃</p>
+<ul>
+<li><strong>隐藏访问者</strong></li>
+</ul>
+<p><img src="http://static.zybuluo.com/abcdocker/ydr1ji2uwnwtiqhu3d3mx7cn/image_1dc4f9h94v6lmr614kpcqhmp32a.png" alt="image_1dc4f9h94v6lmr614kpcqhmp32a.png-35.7kB"></p>
+<p>我们可以看出服务器C并不知道访问自己的实际是用户A，因为代理服务器Z代替用户A去直接与服务器C进行交互，如果代理服务器Z完全被用户A控制（或不完全控制）会惯以<code>肉鸡</code>术语称呼</p>
+<ul>
+<li><strong>正向代理总结</strong></li>
+</ul>
+<p>正向代理是一个位于客户端和原始服务器(origin server)之前的服务器，为了从原始服务器获取内容，客户端向代理发送一个请求并指定目标，然后代理服务器向原始服务器转交请求并将获得的内容返回给客户端。客户端必须设置正向代理服务器。（类似于我们的<a href="https://i4t.com/category/shadowsocks" target="_blank" rel="noopener">ss服务</a>）</p>
+<h3 id="二、反向代理"><a href="#二、反向代理" class="headerlink" title="二、反向代理"></a>二、反向代理</h3><p>反向代理正好与正向代理相反，对于客户端而言代理服务器就像是原始服务器，并且客户端不需要进行任何特别的设置。客户端向反向代理发送普通请求，接着反向代理将判断向何处(后端节点)转交请求，并将获得的内容返回给客户端</p>
+<blockquote>
+<p>通常的代理服务器，只用于代理内部网络对Internet的连接请求，客户机必须指定代理服务器，并将本来要直接发送到Web服务器上的http请求发送到代理服务器中，当一个代理服务器能够代理外部网络上的主机，访问内部网络时，这种代理服务的方式成为反向代理服务</p>
+</blockquote>
+<p><img src="http://static.zybuluo.com/abcdocker/dvkjbg2nqgwrqqpturqvh1ht/image_1dc4ggusp1acf1vnr19nd1jfr161j2n.png" alt="image_1dc4ggusp1acf1vnr19nd1jfr161j2n.png-86.3kB"></p>
+<ul>
+<li>透明代理</li>
+</ul>
+<p>透明代理的意思是客户端根本不需要指定有代理服务器的存在，改变你的<code>request fields</code>(报文)，并会传送真实IP，注意加密的透明代理则属于匿名代理，意思是不用设置代理了。透明代理实践的例子就是很多公司所使用的行为管理软件</p>
+<p><img src="http://static.zybuluo.com/abcdocker/x8ipxuog91w448rf0xqgfb59/image_1dc4h8g9ppsnavbfbp1kk01iim34.png" alt="image_1dc4h8g9ppsnavbfbp1kk01iim34.png-72.5kB"></p>
+<p>当用户A和用户B并不知道行为管理设备充当透明代理行为，用户A或者用户B向服务器A或者服务器B提交请求的时候，透明代理设备根据自身策略拦截并修改用户A或B的报文，并作为实际的请求方，向服务器A或者B发送请求，当接受信息回传，透明代理再根据自身的设置把允许的保存发回至用户A或B，<strong>如果透明代理设置不允许访问服务器B，那么用户A或者用户B就不会得到服务器B的数据</strong></p>
+<h2 id="三、正向代理配置测试"><a href="#三、正向代理配置测试" class="headerlink" title="三、正向代理配置测试"></a>三、正向代理配置测试</h2><p><strong>我们使用nginx代理上网为例子进行演示nginx正向代理</strong></p>
+<p>下载并安装nginx (正向代理不需要单独的模块)</p>
+<p><img src="http://static.zybuluo.com/abcdocker/k7mcvff4rso5ib367xfmr6dn/123.png" alt="123.png-159.3kB"></p>
+<p><strong>我们使用2台服务器都进行如下操作</strong></p>
+<p>10.4.82.140 tomcat.i4t.com 为后端应用服务(域名为tomcat.i4t.com)</p>
+<p>10.4.82.142 nginx.i4t.com 为代理服务器(域名为nginx.i4t.com)</p>
+<blockquote>
+<p><strong>请仔细阅读本段</strong> 首先我们代理服务器几乎不进行任何配置，只是一个普通的nginx代理，所有修改nginx的配置都是在代理服务器上添加</p>
+</blockquote>
+<p>两台nginx默认配置如下</p>
+<pre><code>1.nginx版本没有太大要求
+wget http://nginx.org/download/nginx-1.10.3.tar.gz
+
+#按照依赖包
+yum install -y gcc glibc gcc-c++ prce-devel openssl-devel pcre-devel
+useradd -s /sbin/nologin nginx -M 
+tar xf nginx-1.10.3.tar.gz &amp;&amp; cd nginx-1.10.3
+
+#编译
+./configure --prefix=/usr/local/nginx-1.10.3 --user=nginx --group=nginx --with-http_ssl_module --with-http_stub_status_module
+
+检查
+/usr/loca/nginx/sbin/nginx -t
+
+启动
+/usr/local/nginx/sbin/nginx
+
+查看服务器是否启动
+netstat -lntp|grep nginx
+    tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      7058/nginx: master
+</code></pre><p>接下来是配置nginx代理</p>
+<p><strong>首先我们先配置2台nginx服务器</strong></p>
+<p>1.先配置<code>nginx.i4t.com</code> nginx信息</p>
+<pre><code>#配置10.4.82.142 后端服务器
+cat /usr/local/nginx/conf/nginx.conf
+user  nginx;
+worker_processes  1;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+    access_log  logs/access.log  main;
+
+    sendfile        on;
+    tcp_nopush     on;
+    keepalive_timeout  65;
+
+    gzip  on;
+
+    server {
+
+
+        listen       80;
+        server_name  nginx.i4t.com;
+
+
+        location / {
+        root   /usr/local/nginx/html;
+
+        }
+
+    }
+
+}
+
+echo &quot;nginx.i4t.com&quot; &gt;/usr/local/nginx/html/index.html
+
+/usr/local/nginx/sbin/nginx -s reload
+</code></pre><p>此时nginx.i4t.com域名访问如下</p>
+<p><img src="http://static.zybuluo.com/abcdocker/f5m5ptxz4c9m0mkt3ypa48md/image_1dc6fqsem48edhv13e3ill19k1s.png" alt="image_1dc6fqsem48edhv13e3ill19k1s.png-26.3kB"></p>
+<p><strong>接下来配置后端服务器</strong></p>
+<pre><code>代理服务器默认配置
+10.4.82.140
+</code></pre><p>以下是后端服务器默认配置</p>
+<pre><code>user  nginx;
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+
+    access_log  logs/access.log  main;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+
+    server {
+        listen       80;
+        server_name  tomcat.i4t.com;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+   }
+}
+
+ echo &quot; tomcat.i4t.com&quot; &gt;/usr/local/nginx/html/index.html
+ /usr/local/nginx/sbin/nginx  -s reload
+</code></pre><p>tomcat.i4t.com后端服务器的访问内容如下</p>
+<p><img src="http://static.zybuluo.com/abcdocker/fnpyhyzmrexcehbsyn50ja1p/12333.png" alt="12333.png-64.7kB"></p>
+<p>接下来我们将<code>tomcat.i4t.com 也就是10.4.82.140</code>进行配置权限</p>
+<pre><code>#只允许10.4.82.142访问
+cat /usr/local/nginx/conf/nginx.conf
+user  nginx;
+worker_processes  1;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+    access_log  logs/access.log  main;
+
+    sendfile        on;
+    tcp_nopush     on;
+    keepalive_timeout  65;
+
+    gzip  on;
+
+    server {
+
+
+        listen       80;
+        server_name  tomcat.i4t.com;
+
+        resolver 8.8.8.8;
+        location / {
+        proxy_pass $scheme://$host$request_uri;
+        if ( $remote_addr !~* &quot;10.4.82.142&quot;) {
+            return 403;
+        }
+        root   /usr/local/nginx/html;
+
+        }
+
+    }
+
+}
+
+#proxy_pass $scheme://$host（请求的域名）$request_uri; 域名后面参数
+#resolver DNS地址，可以不写
+</code></pre><p>我们可以看到我们现在电脑已经无法访问tomcat.i4t.com，需要注意的是，我们只是修改了tomcat.i4t.com的代理，nginx.i4t.com依旧可以正常访问的</p>
+<p><img src="http://static.zybuluo.com/abcdocker/pscsrg674ms1pr355tl5alvy/image_1dc6g35vq1v2a94i1q141pvk1q923l.png" alt="image_1dc6g35vq1v2a94i1q141pvk1q923l.png-39kB"></p>
+<p>现在我们进行代理配置</p>
+<ul>
+<li>windows配置如下</li>
+</ul>
+<pre><code>IE--&gt;Internet选项--&gt;连接--&gt;局域网设置--&gt;代理服务器
+</code></pre><p><img src="http://static.zybuluo.com/abcdocker/93z8mmryw5upkgiwvctdgrf0/image_1dc6h8d211sg518nj1vrc1etapah42.png" alt="image_1dc6h8d211sg518nj1vrc1etapah42.png-246.7kB"></p>
+<ul>
+<li>mac设置如下</li>
+</ul>
+<p><img src="http://static.zybuluo.com/abcdocker/dbnux7j8m6hkscmkzh9crhkc/image_1dc6haibh11471s8jcod1fv9eh94f.png" alt="image_1dc6haibh11471s8jcod1fv9eh94f.png-99.4kB"></p>
+<p><img src="http://static.zybuluo.com/abcdocker/6yqgx71ay61fw0mwld231zfh/image_1dc6hbavagmtog91a231ee12t64s.png" alt="image_1dc6hbavagmtog91a231ee12t64s.png-91.3kB"></p>
+<ul>
+<li>Linux</li>
+</ul>
+<pre><code>export http_proxy=http://10.4.82.142:80
+wget http://tomcat.i4t.com
+</code></pre><p><img src="http://static.zybuluo.com/abcdocker/su4ykm4xjt6r40slu6ui76b6/3333.png" alt="3333.png-351.1kB"></p>
+<p><strong>这时候我们访问tomcat.i4t.com就是200，状态</strong></p>
+<p><img src="http://static.zybuluo.com/abcdocker/k5tpjx98l0auad3da9g8bvga/image_1dc6hdijka551kb51q821p3m1t9r59.png" alt="image_1dc6hdijka551kb51q821p3m1t9r59.png-30.7kB"></p>
+<h2 id="四、反向代理配置测试"><a href="#四、反向代理配置测试" class="headerlink" title="四、反向代理配置测试"></a>四、反向代理配置测试</h2><p>安装和上面编译安装一样，没有特殊模块。只需要修改配置文件</p>
+<pre><code>cat /usr/local/nginx/conf/nginx.conf
+user  www;
+worker_processes  1;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+    access_log  logs/access.log  main;
+
+    sendfile        on;
+    tcp_nopush     on;
+    keepalive_timeout  65;
+
+    gzip  on;
+
+    server {
+
+
+        listen       80;
+        server_name  nginx.i4t.com;
+
+        location / {
+           proxy_pass http://abcdocker;
+           proxy_set_header   Host             $host;
+           proxy_set_header   X-Real-IP        $remote_addr;
+           proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+
+        }
+
+    }
+
+
+    upstream abcdocker {
+       server 10.4.82.140:8080;
+       server 127.0.0.1:8080;
+    }
+
+}
+
+
+#proxy_pass 代理节点，可以用ip+端口
+#upstream 后面写名称
+#server 后端节点名称
+</code></pre><p>访问验证，我们访问nginx.i4t.com域名打开的是tomcat后端节点</p>
+<p><img src="http://static.zybuluo.com/abcdocker/y1nhqvcp1zf532g7w5josuqx/333.png" alt="333.png-334.7kB"></p>
+<blockquote>
+<p><strong>请注意缓存（google浏览器缓存不是很好清理）</strong></p>
+</blockquote>
+
+        </div>
+        <!-- .entry-content -->
+        <div class="single-reward">
+          <div class="reward-open">赏<div class="reward-main">
+              <ul class="reward-row">
+                <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/donate/AliPay.jpg"></li>
+                <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/donate/weixinpay.png"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2019/12/25/shell基础教程/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="" data-src="https://cdn.jsdelivr.net/gh/xiangyu1103/picgo/img/miao02.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/xiangyu1103/picgo/img/miao02.jpg">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                shell基础教程</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2019/12/25/php基础教程/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="" data-src="https://cdn.jsdelivr.net/gh/xiangyu1103/picgo/img/miao02.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/xiangyu1103/picgo/img/miao02.jpg">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                php基础教程</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+<div id="vcomments"></div>
+<script>
+  window.onload = function(){
+      var valine = new Valine();
+      valine.init({
+        el: '#vcomments',
+        appId: "yRrWxdm60ya2scYz7h6mjamr-gzGzoHsz",
+        appKey: "9s7yETi1nLzx2hQ0OhE6508X",
+        path: window.location.pathname,
+        placeholder: "你是我一生只会遇见一次的惊喜 ..."
+      })
+  }
+</script>
+
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <a href="xiangyu1103.githu.io" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/xiangyu1103/picgo/img/touxiang01.jpg" itemprop="image" alt="xiangyu1103" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="xiangyu1103.githu.io" itemprop="url" rel="author">xiangyu1103</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>Dreamer</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
+</div>
+
+
+
+    </div>    
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            // PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+    <!-- <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Dreamer<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer> -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+  <div class="site-info">
+    <div class="footertext">
+      <div class="img-preload">
+        <img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/wordpress-rotating-ball-o.svg">
+        <img src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/disqus-preloader.svg">
+      </div>
+      <p style="color: #666666;">&copy 2018</p>
+    </div>
+    <div class="footer-device">
+    <p style="font-family: 'Ubuntu', sans-serif;">
+        <span style="color: #b9b9b9;">Theme <a href="https://github.com/honjun/hexo-theme-sakura" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Sakura</a> <i class="iconfont icon-sakura rotating" style="color: #ffc0cb;display:inline-block"></i> by <a href="https://2heng.xin/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Mashiro</a>&<a href="https://www.hojun.cn/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Hojun</a>, Powered by Hexo, Hosted by Coding Pages</a>
+        </span>
+      </p>
+    </div>
+  </div><!-- .site-info -->
+</footer>
+
+
+
+<!-- <script src="/js/tocbot.js"></script> -->
+<script type="text/javascript" src="/js/lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/InsightSearch.js"></script>
+<script type="text/javascript" src="/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/js/zoom.min.js"></script>
+<script type="text/javascript" src="/js/sakura-app.js"></script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine@1.3.4/dist/Valine.min.js'></script>
+<!-- 不蒜子 网页计数器 -->
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script> -->
+<script type="text/javascript">
+/* <![CDATA[ */
+if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  var Poi = {"pjax":"1","movies":{"url": "https://cdn.jsdelivr.net/gh/honjun/hojun@1.2","name":"Unbroken.mp4","live":"close"},"windowheight":"fixed","codelamp":"close","ajaxurl":"","order":"asc","formpostion":"bottom"};
+} else {
+  var Poi = {"pjax":"1","movies":{"url": "https://cdn.jsdelivr.net/gh/honjun/hojun@1.2","name":"Unbroken.mp4","live":"open"},"windowheight":"auto","codelamp":"close","ajaxurl":"","order":"asc","formpostion":"bottom"};
+}
+/* ]]> */
+
+</script>
+<script>
+$(document).ready(function() {
+  if ($(".toc").length > 0 && document.body.clientWidth > 1200) {
+    if ($(".pattern-center").length > 0) { //有图的情况
+      tocbot.init({
+          // Where to render the table of contents.
+          tocSelector: '.toc', // 放置目录的容器
+          // Where to grab the headings to build the table of contents.
+          contentSelector: '.entry-content', // 正文内容所在
+          // Which headings to grab inside of the contentSelector element.
+          scrollSmooth: true,
+          headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+          headingsOffset: -400,
+          scrollSmoothOffset: -85
+      });
+    } else {
+      tocbot.init({
+          // Where to render the table of contents.
+          tocSelector: '.toc', // 放置目录的容器
+          // Where to grab the headings to build the table of contents.
+          contentSelector: '.entry-content', // 正文内容所在
+          // Which headings to grab inside of the contentSelector element.
+          scrollSmooth: true,
+          headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+          headingsOffset: -85,
+          scrollSmoothOffset: -85
+      });
+    }
+    var offsetTop = $('.toc').offset().top - 95;
+    window.onscroll = function() {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop >= offsetTop) {
+        $('.toc').addClass('toc-fixed');
+      } else {
+        $('.toc').removeClass('toc-fixed');
+      }
+    }
+  }
+});
+</script>
+
+    <div class="openNav no-select" style="height: 50px;">
+      <div class="iconflat no-select" style="width: 50px; height: 50px;">
+        <div class="icon"></div>
+      </div>
+      <div class="site-branding search-form-submit">
+        <i class="iconfont js-toggle-search iconsearch icon-search"></i>
+      </div>
+    </div>
+  </section>
+<!-- 实现换肤功能 -->
+  <div class="skin-menu no-select" id="mainskin"  style="position: fixed">
+    <div class="theme-controls row-container">
+        <ul class="menu-list">
+            <li id="white-bg"> <i class="fa fa-television" aria-hidden="true"></i></li>
+            <li id="sakura-bg"> <i class="iconfont icon-sakura"></i></li>
+            <li id="gribs-bg"> <i class="fa fa-slack" aria-hidden="true"></i></li>
+            <li id="KAdots-bg"> <i class="iconfont icon-dots"></i></li>
+            <li id="totem-bg"> <i class="fa fa-optin-monster" aria-hidden="true"></i></li>
+            <li id="pixiv-bg"> <i class="iconfont icon-pixiv"></i></li>
+            <li id="bing-bg"> <i class="iconfont icon-bing"></i></li>
+            <li id="dark-bg"> <i class="fa fa-moon-o" aria-hidden="true"></i></li>
+        </ul>
+    </div>
+</div>   
+<canvas id="night-mode-cover"></canvas>
+ 
+  <div class="changeSkin-gear no-select">
+    <div class="keys" id="setbtn"> <span id="open-skinMenu"> 切换主题 | SCHEME TOOL &nbsp;<i
+                class="iconfont icon-gear inline-block rotating"></i> </span></div>
+</div>
+
+  <div id="mo-nav" class="">
+  <div class="m-avatar">
+    <img src="https://cdn.jsdelivr.net/gh/xiangyu1103/CDN/img/custom/avatar.jpg">
+  </div>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">さくら荘そのDREAMER</p>
+  <p style="text-align: center; word-spacing: 20px;">
+    
+      
+        <a href="http://github.com/xingyu1103" class="fa fa-github" target="_blank" style="color: #333; margin-left:20px"></a>
+      
+        <a href="https://weibo.com/938560289/home?wvr=5" class="fa fa-weibo" target="_blank" style="color: #dd4b39; margin-left:20px"></a>
+      
+        <a href="https://wpa.qq.com/msgrd?v=3&uin=164642395&site=qq&menu=yes" class="fa fa-qq" target="_blank" style="color: #25c6fe; margin-left:20px"></a>
+      
+    
+  </p>
+  <ul id="menu-new-1" class="menu">
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+            首页
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            归档
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/技术/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  技术
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/生活/">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  生活
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/资源/">
+                  <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                  资源
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/随想/">
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                  随想
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/转载/">
+                  <i class="fa fa-book" aria-hidden="true"></i>
+                  转载
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="javascript:;">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-list-ul faa-vertical" aria-hidden="true"></i>
+            清单
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/tags/悦读/">
+                  <i class="fa fa-th-list faa-bounce" aria-hidden="true"></i>
+                  书单
+                </a>
+              </li>
+            
+              <li>
+                <a href="/bangumi/">
+                  <i class="fa fa-film faa-vertical" aria-hidden="true"></i>
+                  番组
+                </a>
+              </li>
+            
+              <li>
+                <a href="/video/">
+                  <i class="fa fa fa-file-video-o" aria-hidden="true"></i>
+                  视频
+                </a>
+              </li>
+            
+              <li>
+                <a href="/music/">
+                  <i class="fa fa-headphones" aria-hidden="true"></i>
+                  歌单
+                </a>
+              </li>
+            
+              <li>
+                <a href="/tags/图集/">
+                  <i class="fa fa-photo" aria-hidden="true"></i>
+                  图集
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            Ops工具
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/linux/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  Linux
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/nginx/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  Nginx
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/tomcat/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  Tomcat
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/php/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  php
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/shell/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  Shell
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/jumpserver/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  Jumpserver
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            DevOps
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="//categories/虚拟化/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  虚拟化
+                </a>
+              </li>
+            
+              <li>
+                <a href="//categories/docker/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  Docker
+                </a>
+              </li>
+            
+              <li>
+                <a href="//categories/kubernetes/">
+                  <i class="fa fa-anchor" aria-hidden="true"></i>
+                  Kubernetes
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            监控
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/zabbix/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  zabbix
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/nagios/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  nagios
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Grafana/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  Grafana
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/prometheus/">
+                  <i class="fa fa-free-code-camp" aria-hidden="true"></i>
+                  prometheus
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            数据库
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/mysql/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  mysql
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/redis/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  redis
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/Oracle/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  Oracle
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/links/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-link faa-shake" aria-hidden="true"></i>
+            友人帐
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+            关于
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/about/">
+                  <i class="fa fa-meetup" aria-hidden="true"></i>
+                  我？
+                </a>
+              </li>
+            
+              <li>
+                <a href="/theme-sakura/">
+                  <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                  主题
+                </a>
+              </li>
+            
+              <li>
+                <a href="/lab/">
+                  <i class="fa fa-cogs" aria-hidden="true"></i>
+                  Lab
+                </a>
+              </li>
+            
+              <li>
+                <a href="/donate/">
+                  <i class="fa fa-heart faa-pulse" aria-hidden="true"></i>
+                  赞赏
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+  </ul>
+  <p style="text-align: center; font-size: 13px; color: #b9b9b9;">&copy 2019 hexo-sakura</p>
+</div>
+<button onclick="topFunction()" class="mobile-cd-top" id="moblieGoTop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js"></script>
+<style>
+  .aplayer .aplayer-lrc {
+    height: 35px;
+  }
+  .aplayer .aplayer-lrc p{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px !important;
+  }
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{
+    color: #FF1493;
+  }
+  .aplayer.aplayer-narrow .aplayer-body{
+    left: -66px !important;
+  }
+  .aplayer.aplayer-fixed .aplayer-lrc {
+    display: none;
+  }
+  .aplayer .aplayer-lrc.aplayer-lrc-hide {
+      display:none !important;
+  }
+  .aplayer.aplayer-fixed .lrc-show {
+    display: block;
+    background: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<div class="aplayer"
+
+    data-id="2660651585"
+
+    data-server="netease"
+
+    data-type="playlist"
+
+    data-fixed="true"
+
+    data-autoplay="false"
+
+    data-loop="all"
+
+    data-order="random"
+
+    data-preload="auto"
+
+    data-volume="0.7"
+
+    data-mutex="true"
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/meting@1.2/dist/Meting.min.js"></script>
+<script>
+  $(function(){
+    $('body').on('click', '.aplayer', function(){
+      if($('.aplayer-button').hasClass('aplayer-play')) {
+        $('.aplayer-lrc').removeClass('lrc-show');
+      } else {
+        $('.aplayer-lrc').addClass('lrc-show');
+      }
+    })
+  });
+</script>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 樱花飘落特效 -->
+<script src="https://cdn.jsdelivr.net/gh/Zevs6/CDN/js/ssakura.js"></script>
+</body>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 樱花飘落特效 -->
+<script src="https://cdn.jsdelivr.net/gh/Zevs6/CDN/js/ssakura.js"></script>
+</html>

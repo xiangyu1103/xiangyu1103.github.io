@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://xiangyu1103.github.io/"/>
-  <updated>2019-12-18T08:48:16.207Z</updated>
+  <updated>2019-12-25T08:06:43.250Z</updated>
   <id>https://xiangyu1103.github.io/</id>
   
   <author>
@@ -15,6 +15,134 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>资源</title>
+    <link href="https://xiangyu1103.github.io/2019/12/25/%E8%B5%84%E6%BA%90/"/>
+    <id>https://xiangyu1103.github.io/2019/12/25/资源/</id>
+    <published>2019-12-25T08:05:42.000Z</published>
+    <updated>2019-12-25T08:06:43.250Z</updated>
+    
+    <summary type="html">
+    
+      资源
+    
+    </summary>
+    
+      <category term="资源" scheme="https://xiangyu1103.github.io/categories/%E8%B5%84%E6%BA%90/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>shell基础教程</title>
+    <link href="https://xiangyu1103.github.io/2019/12/25/shell%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"/>
+    <id>https://xiangyu1103.github.io/2019/12/25/shell基础教程/</id>
+    <published>2019-12-25T06:45:42.000Z</published>
+    <updated>2019-12-25T06:46:57.127Z</updated>
+    
+    <summary type="html">
+    
+      shell基础教程
+    
+    </summary>
+    
+      <category term="shell" scheme="https://xiangyu1103.github.io/categories/shell/"/>
+    
+    
+      <category term="linux" scheme="https://xiangyu1103.github.io/tags/linux/"/>
+    
+      <category term="shell" scheme="https://xiangyu1103.github.io/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx反向代理与正向代理</title>
+    <link href="https://xiangyu1103.github.io/2019/12/25/Nginx%20%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86/"/>
+    <id>https://xiangyu1103.github.io/2019/12/25/Nginx 反向代理与正向代理/</id>
+    <published>2019-12-25T06:45:23.000Z</published>
+    <updated>2019-12-25T06:53:53.921Z</updated>
+    
+    <summary type="html">
+    
+      Nginx反向代理与正向代理
+    
+    </summary>
+    
+      <category term="nginx" scheme="https://xiangyu1103.github.io/categories/nginx/"/>
+    
+    
+      <category term="linux" scheme="https://xiangyu1103.github.io/tags/linux/"/>
+    
+      <category term="nginx" scheme="https://xiangyu1103.github.io/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>php基础教程</title>
+    <link href="https://xiangyu1103.github.io/2019/12/25/php%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"/>
+    <id>https://xiangyu1103.github.io/2019/12/25/php基础教程/</id>
+    <published>2019-12-25T06:45:23.000Z</published>
+    <updated>2019-12-25T06:46:33.660Z</updated>
+    
+    <summary type="html">
+    
+      php基础教程
+    
+    </summary>
+    
+      <category term="php" scheme="https://xiangyu1103.github.io/categories/php/"/>
+    
+    
+      <category term="linux" scheme="https://xiangyu1103.github.io/tags/linux/"/>
+    
+      <category term="php" scheme="https://xiangyu1103.github.io/tags/php/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vs code 的常用快捷键</title>
+    <link href="https://xiangyu1103.github.io/2019/01/01/VS%20Code%20%E7%9A%84%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    <id>https://xiangyu1103.github.io/2019/01/01/VS Code 的常用快捷键/</id>
+    <published>2019-01-01T02:16:01.000Z</published>
+    <updated>2019-12-20T02:42:45.194Z</updated>
+    
+    <summary type="html">
+    
+      vs code 的常用快捷键
+    
+    </summary>
+    
+      <category term="生活" scheme="https://xiangyu1103.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="web" scheme="https://xiangyu1103.github.io/tags/web/"/>
+    
+      <category term="悦读" scheme="https://xiangyu1103.github.io/tags/%E6%82%A6%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>tomcat基础</title>
+    <link href="https://xiangyu1103.github.io/2019/01/01/tomcat%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"/>
+    <id>https://xiangyu1103.github.io/2019/01/01/tomcat基础教程/</id>
+    <published>2019-01-01T02:16:01.000Z</published>
+    <updated>2019-12-25T07:40:24.164Z</updated>
+    
+    <summary type="html">
+    
+      tomcat基础
+    
+    </summary>
+    
+      <category term="tomcat" scheme="https://xiangyu1103.github.io/categories/tomcat/"/>
+    
+    
+      <category term="linux" scheme="https://xiangyu1103.github.io/tags/linux/"/>
+    
+      <category term="Tomcat" scheme="https://xiangyu1103.github.io/tags/Tomcat/"/>
+    
+  </entry>
   
   <entry>
     <title>HCL模拟器设备远程登录方法</title>
@@ -57,6 +185,48 @@
       <category term="web" scheme="https://xiangyu1103.github.io/tags/web/"/>
     
       <category term="悦读" scheme="https://xiangyu1103.github.io/tags/%E6%82%A6%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Github+jsDelivr+PicGo 打造稳定快速、高效免费图床</title>
+    <link href="https://xiangyu1103.github.io/2018/12/11/Github+jsDelivr+PicGo%20%E6%89%93%E9%80%A0%E7%A8%B3%E5%AE%9A%E5%BF%AB%E9%80%9F%E3%80%81%E9%AB%98%E6%95%88%E5%85%8D%E8%B4%B9%E5%9B%BE%E5%BA%8A/"/>
+    <id>https://xiangyu1103.github.io/2018/12/11/Github+jsDelivr+PicGo 打造稳定快速、高效免费图床/</id>
+    <published>2018-12-11T12:16:01.000Z</published>
+    <updated>2019-12-25T03:12:27.188Z</updated>
+    
+    <summary type="html">
+    
+      Github+jsDelivr+PicGo 打造稳定快速、高效免费图床
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://xiangyu1103.github.io/categories/Linux/"/>
+    
+    
+      <category term="linux" scheme="https://xiangyu1103.github.io/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux定时备份MySQL数据库</title>
+    <link href="https://xiangyu1103.github.io/2018/12/11/Linux%E5%AE%9A%E6%97%B6%E5%A4%87%E4%BB%BDMySQL%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <id>https://xiangyu1103.github.io/2018/12/11/Linux定时备份MySQL数据库/</id>
+    <published>2018-12-11T12:16:01.000Z</published>
+    <updated>2019-12-25T06:13:14.075Z</updated>
+    
+    <summary type="html">
+    
+      Linux定时备份MySQL数据库
+    
+    </summary>
+    
+      <category term="mysql" scheme="https://xiangyu1103.github.io/categories/mysql/"/>
+    
+    
+      <category term="linux" scheme="https://xiangyu1103.github.io/tags/linux/"/>
+    
+      <category term="mysql" scheme="https://xiangyu1103.github.io/tags/mysql/"/>
     
   </entry>
   
